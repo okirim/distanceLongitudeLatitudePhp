@@ -3,23 +3,35 @@ calculate distance between 2 points using latitude and longitude with php
 
 
 
-<?php
-function distance($lat1, $lon1, $lat2, $lon2) {
+function distance($lat1, $lon1, $lat2, $lon2){
+        $R = 6371; // km
+        $dLat = toRad($lat2-$lat1);
+        $dLon = toRad($lon2-$lon1);
+        $lat1 = toRad($lat1);
+        $lat2 = toRad($lat2);
 
-    $pi80 = M_PI / 180;
-    $lat1 *= $pi80;
-    $lon1 *= $pi80;
-    $lat2 *= $pi80;
-    $lon2 *= $pi80;
-
-    $r = 6372.797; // mean radius of Earth in km
-    $dlat = $lat2 - $lat1;
-    $dlon = $lon2 - $lon1;
-    $a = sin($dlat / 2) * sin($dlat / 2) + cos($lat1) * cos($lat2) * sin($dlon / 2) * sin($dlon / 2);
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-    $km = $r * $c;
-
-
-    return $km;
+        $a = sin($dLat/2) * sin($dLat/2) +sin($dLon/2) * sin($dLon/2) * cos($lat1) * cos($lat2); 
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a)); 
+        $d = $R * $c;
+        return $d;
 }
-?>
+
+// Converts numeric degrees to radians
+function toRad($Value) 
+{
+    return $Value * pi() / 180;
+}
+
+
+# with sql 
+SELECT latitude, longitude, SQRT(
+    POW(69.1 * (latitude - [startlat]), 2) +
+    POW(69.1 * ([startlng] - longitude) * COS(latitude / 57.3), 2)) AS distance
+FROM TableName HAVING distance < 25 ORDER BY distance;
+
+# with laravel  distance between 2 persons
+$users = DB::table('users')
+          ->select(DB::raw('name,SQRT(POW(69.1 * (latitude - 24.900110), 2) + POW(69.1 * (67.099760 -longitude) * COS(latitude / 57.3), 2)) AS distance'))
+          ->havingRaw('distance < 25')
+          ->OrderBy('distance')
+          ->get();

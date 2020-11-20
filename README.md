@@ -16,11 +16,11 @@
         return $d;
       }
 
-   // Converts numeric degrees to radians
+        // Converts numeric degrees to radians
      function toRad($Value) 
-    {
-    return $Value * pi() / 180;
-    }
+     {
+       return $Value * pi() / 180;
+     }
 
   
 # with sql 
@@ -31,7 +31,7 @@
 
 # with laravel  distance between 2 persons
     $users = DB::table('users')
-          ->select(DB::raw('name,SQRT(POW(69.1 * (latitude - 24.900110), 2) + POW(69.1 * (67.099760 -longitude) * COS(latitude / 57.3), 2)) AS distance'))
+          ->select(DB::raw('name,SQRT(POW(69.1 * (latitude - $latitude), 2) + POW(69.1 * ($longitude - longitude) * COS(latitude / 57.3), 2)) AS distance'))
           ->havingRaw('distance < 25')
           ->OrderBy('distance')
           ->get();

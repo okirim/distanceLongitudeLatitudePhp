@@ -1,8 +1,7 @@
-# distanceLongitudeLatitudePhp
-calculate distance between 2 points using latitude and longitude with php 
+# calculate distance between 2 points using latitude and longitude with php  sql or laravel
 
 
-
+# with php 
 function distance($lat1, $lon1, $lat2, $lon2){
         $R = 6371; // km
         $dLat = toRad($lat2-$lat1);
@@ -22,15 +21,15 @@ function toRad($Value)
     return $Value * pi() / 180;
 }
 
-
+  
 # with sql 
-SELECT latitude, longitude, SQRT(
+  SELECT latitude, longitude, SQRT(
     POW(69.1 * (latitude - [startlat]), 2) +
     POW(69.1 * ([startlng] - longitude) * COS(latitude / 57.3), 2)) AS distance
-FROM TableName HAVING distance < 25 ORDER BY distance;
+ FROM TableName HAVING distance < 25 ORDER BY distance;
 
 # with laravel  distance between 2 persons
-$users = DB::table('users')
+    $users = DB::table('users')
           ->select(DB::raw('name,SQRT(POW(69.1 * (latitude - 24.900110), 2) + POW(69.1 * (67.099760 -longitude) * COS(latitude / 57.3), 2)) AS distance'))
           ->havingRaw('distance < 25')
           ->OrderBy('distance')

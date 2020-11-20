@@ -2,7 +2,7 @@
 
 
 # with php 
-function distance($lat1, $lon1, $lat2, $lon2){
+   function distance($lat1, $lon1, $lat2, $lon2){
         $R = 6371; // km
         $dLat = toRad($lat2-$lat1);
         $dLon = toRad($lon2-$lon1);
@@ -13,13 +13,13 @@ function distance($lat1, $lon1, $lat2, $lon2){
         $c = 2 * atan2(sqrt($a), sqrt(1-$a)); 
         $d = $R * $c;
         return $d;
-}
+   }
 
-// Converts numeric degrees to radians
-function toRad($Value) 
-{
+   // Converts numeric degrees to radians
+     function toRad($Value) 
+    {
     return $Value * pi() / 180;
-}
+    }
 
   
 # with sql 
